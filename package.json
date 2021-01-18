@@ -12,7 +12,7 @@
     "build": "tsc",
     "clean": "tsc --build --clean",
     "postinstall": "husky install",
-    "prepublishOnly": "pinst --disable && npm run prod",
+    "prepublishOnly": "pinst --disable && npm run build",
     "postpublish": "pinst --enable"
   },
   "engines": {
