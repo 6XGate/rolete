@@ -23,7 +23,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           npm install
-          npm publish
+          npm publish --access public
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
