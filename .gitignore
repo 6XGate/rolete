@@ -1,5 +1,5 @@
 /package-lock.json
-/lib/**/*.d.ts
+/types/
 /lib/**/*.js
 /lib/**/*.js.map
 
