@@ -32,10 +32,12 @@
     "colorette": "^1.2.1",
     "esm": "^3.2.25",
     "lodash": "^4.17.20",
+    "pkg-dir": "^5.0.0",
     "pretty-bytes": "^5.5.0",
     "pretty-ms": "^7.0.1",
     "rollup": "^2.36.1",
     "rollup-plugin-terser": "^7.0.2",
+    "strip-ansi": "^6.0.0",
     "yargs": "^16.2.0"
   },
   "devDependencies": {

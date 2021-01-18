@@ -1,16 +1,39 @@
-import { options, blue, gray, green, red, yellow } from "colorette";
-import { isError } from "lodash";
+import pathUtils from "path";
+import { options as colorOptions, blue, gray, green, red, yellow } from "colorette";
+import { isError, isString, toString } from "lodash";
 import type { RollupError } from "rollup";
+import stripAnsi from "strip-ansi";
 import packageInfo from "../../package.json";
+import { getArguments } from "../cli/arguments";
 
-const name = packageInfo.name;
+const name = pathUtils.basename(packageInfo.name);
+const args = getArguments();
+if ("ansi" in args) {
+    colorOptions.enabled = args.ansi || false;
+}
+
+type Style = (message: string) => string;
+const normal = (text: string): string => text;
+
+type ConsoleParams = [string, ...unknown[]];
+const format = colorOptions.enabled ?
+    (style: Style, message: unknown, data: unknown[]): ConsoleParams =>
+        [ `[${style(name)}] ${style(toString(message))}`, ...data ] :
+    (_style: Style, message: unknown, data: unknown[]): ConsoleParams =>
+        [ `[${name}] ${stripAnsi(toString(message))}`, ...data.map(entry => (isString(entry) ? stripAnsi(entry) : entry)) ];
+
+const raw = colorOptions.enabled ?
+    (message: unknown, data: unknown[]): ConsoleParams =>
+        [ toString(message), ...data ] :
+    (message: unknown, data: unknown[]): ConsoleParams =>
+        [ stripAnsi(toString(message)), ...data.map(entry => (isString(entry) ? stripAnsi(entry) : entry)) ];
 
 export function isInColor(): boolean {
-    return options.enabled;
+    return colorOptions.enabled;
 }
 
 export function enableColor(enable: boolean): void {
-    options.enabled = enable;
+    colorOptions.enabled = enable;
 }
 
 let failureOccurred = false;
@@ -19,32 +42,32 @@ export function failed(): boolean {
     return failureOccurred;
 }
 
-export function debug(...message: unknown[]): void {
-    console.log(`[${name}] ${message.join(" ")}`);
+export function debug(message: unknown, ...data: unknown[]): void {
+    console.debug(...format(normal, message, data));
 }
 
-export function error(...message: unknown[]): void {
-    console.log(`[${red(name)}] ${red(message.join(" "))}`);
+export function error(message: unknown, ...data: unknown[]): void {
+    console.error(...format(red, message, data));
 }
 
-export function info(...message: unknown[]): void {
-    console.log(`[${green(name)}] ${green(message.join(" "))}`);
+export function info(message: unknown, ...data: unknown[]): void {
+    console.info(...format(green, message, data));
 }
 
-export function log(...message: unknown[]): void {
-    console.log(`[${blue(name)}] ${blue(message.join(" "))}`);
+export function log(message: unknown, ...data: unknown[]): void {
+    console.log(...format(blue, message, data));
 }
 
-export function trace(...message: unknown[]): void {
-    console.log(`[${gray(name)}] ${gray(message.join(" "))}`);
+export function trace(message: unknown, ...data: unknown[]): void {
+    console.trace(...format(gray, message, data));
 }
 
-export function warn(...message: unknown[]): void {
-    console.log(`[${yellow(name)}] ${yellow(message.join(" "))}`);
+export function warn(message: unknown, ...data: unknown[]): void {
+    console.warn(...format(yellow, message, data));
 }
 
-export function line(...message: unknown[]): void {
-    console.log(...message);
+export function line(message: unknown, ...data: unknown[]): void {
+    console.log(...raw(message, data));
 }
 
 function tryPrintRollupError(rollupError: RollupError): void {
@@ -65,11 +88,11 @@ function tryPrintRollupError(rollupError: RollupError): void {
     }
 
     if (fileLine) {
-        console.log(fileLine);
+        line(fileLine);
     }
 
     if (rollupError.frame) {
-        console.log(rollupError.frame);
+        line(rollupError.frame);
     }
 }
 

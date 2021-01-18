@@ -20,6 +20,10 @@ export const getArguments = once(() =>
     yargs(process.argv.splice(2)).
         usage("Usage: $0 [options]").
         /***/strict().
+        boolean("ansi").
+        /***/describe("ansi", "Enables colors").
+        boolean("no-ansi").
+        /***/describe("no-ansi", "Disables colors").
         choices("c", [ "prod", "dev" ] as const).
         /***/alias("c", "config").alias("c", "configuration").
         /***/describe("c", "Configuration, 'dev' (default) or 'prod'").

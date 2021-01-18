@@ -1,6 +1,6 @@
-import { promises as fsUtils } from "fs";
 import pathUtils from "path";
 import { camelCase, get, isEmpty } from "lodash";
+import pkgDir from "pkg-dir";
 import { Target } from "../variables";
 
 export type MinimalPackageDotJson = {
@@ -23,24 +23,12 @@ export type MinimalPackageDotJson = {
 };
 
 export async function findPackageDotJson(): Promise<string> {
-    let at = process.cwd();
-    let parts = pathUtils.parse(at);
-    while (parts.base.length !== 0 && parts.root !== parts.dir) {
-        const jsonPath = pathUtils.join(at, "package.json");
-        try {
-            // eslint-disable-next-line no-await-in-loop
-            await fsUtils.stat(jsonPath);
-
-            return jsonPath;
-        } catch (error: unknown) {
-            // Ignored...
-        }
-
-        at = pathUtils.resolve(pathUtils.join(at, ".."));
-        parts = pathUtils.parse(at);
+    const jsonPath = await pkgDir(process.cwd());
+    if (!jsonPath) {
+        throw new Error("No package.json found, initialize your package before using rolete");
     }
 
-    throw new Error("Missing package.json");
+    return pathUtils.join(jsonPath, "package.json");
 }
 
 function parseValue(packageInfo: MinimalPackageDotJson, path: string, value: string): string {

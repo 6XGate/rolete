@@ -2,8 +2,8 @@
 import { isEmpty } from "lodash";
 import type { ReadonlyDeep } from "type-fest";
 import { getArguments } from "./cli/arguments";
-import type { RoleteContext, RoleteContextBase, RoleteContextData } from "./context";
-import { makeExternals } from "./context";
+import type { RoleteContext, RoleteContextData } from "./context";
+import { makeContext, makeDefaultContextData, makeExternals } from "./context";
 import { merge } from "./merge/merge";
 import { inputStrategies, outputStrategies } from "./merge/strategies";
 import type { RoletePlugin } from "./plugins";
@@ -16,38 +16,6 @@ import type { BuildVariables, Configuration } from "./variables";
 
 export type { BuildVariables, Configuration, Target } from "./variables";
 export type { RoleteContext, RoleteContextData } from "./context";
-
-function makeDefaultContextData(variables: BuildVariables): RoleteContextData {
-    return {
-        input: {
-            input: variables.inPath,
-        },
-        output: {
-            name:      variables.name,
-            file:      variables.outPath,
-            sourcemap: true,
-            format:    variables.target,
-        },
-        globals: { },
-    };
-}
-
-function makeContext(data: RoleteContextData): RoleteContextBase {
-    return {
-        globals: globals => {
-            data.globals = { ...data.globals, ...globals };
-        },
-        input: input => {
-            merge(inputStrategies, data.input, input);
-        },
-        output: output => {
-            merge(outputStrategies, data.output, output);
-            if (output.dir) {
-                delete data.output.file;
-            }
-        },
-    };
-}
 
 export type BuildConfiguration = (variables: ReadonlyDeep<BuildVariables>, roll: RoleteContext) => void;
 
