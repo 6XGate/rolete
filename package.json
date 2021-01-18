@@ -5,7 +5,7 @@
   "private": false,
   "bin": "bin/rolete",
   "main": "lib/rolete.js",
-  "typings": "types",
+  "typings": "types/rolete.d.ts",
   "scripts": {
     "lint": "eslint lib bin/rolete .eslintrc.js",
     "test": "echo \"TODO: testing coming soon\" && exit 1",
