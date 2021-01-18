@@ -16,6 +16,7 @@ import type { BuildVariables, Configuration } from "./variables";
 
 export type { BuildVariables, Configuration, Target } from "./variables";
 export type { RoleteContext, RoleteContextData } from "./context";
+export type { RoletePlugin } from "./plugins";
 
 export type BuildConfiguration = (variables: ReadonlyDeep<BuildVariables>, roll: RoleteContext) => void;
 
@@ -54,7 +55,7 @@ const rolete: Rolete = async (config: BuildConfiguration): Promise<RoleteContext
             typings:    pkgConfig.typings,
         });
 
-        const data = makeDefaultContextData(variables);
+        const data = makeDefaultContextData(pkgConfig, variables);
         const context = makeContext(data) as RoleteContext;
         for (const plugin of plugins) {
             plugin.prepare(context, variables);

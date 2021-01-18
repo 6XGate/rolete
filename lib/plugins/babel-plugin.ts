@@ -9,10 +9,9 @@ import type { BuildVariables } from "../variables";
 export class BabelPlugin extends RoletePlugin {
     private options!: RollupBabelInputPluginOptions|RollupBabelOutputPluginOptions;
     private onOutput!: boolean;
-    private forceEnabled!: boolean;
 
     enabled(data: RoleteContextData): boolean {
-        if (this.forceEnabled) {
+        if (this.onOutput) {
             return true;
         }
 
@@ -50,7 +49,6 @@ export class BabelPlugin extends RoletePlugin {
         roll.babel = (options, onOutput) => {
             this.options = merge(this.options, options);
             this.onOutput = Boolean(onOutput);
-            this.forceEnabled = true;
         };
     }
 
@@ -81,7 +79,6 @@ export class BabelPlugin extends RoletePlugin {
             };
 
         this.onOutput = false;
-        this.forceEnabled = false;
     }
 }
 

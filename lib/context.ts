@@ -1,6 +1,7 @@
 import type { InputOptions, OutputOptions } from "rollup";
 import { merge } from "./merge/merge";
 import { inputStrategies, outputStrategies } from "./merge/strategies";
+import type { PackageConfiguration } from "./utils/package";
 import type { BuildVariables } from "./variables";
 
 export type SimpleGlobals = { [library: string]: string };
@@ -23,19 +24,19 @@ export interface RoleteContextData {
     globals: SimpleGlobals;
 }
 
-export function makeDefaultContextData(variables: BuildVariables): RoleteContextData {
+export function makeDefaultContextData(pkgConfig: PackageConfiguration, variables: BuildVariables): RoleteContextData {
     return {
         variables,
         input: {
-            input: variables.inPath,
+            input: pkgConfig.input,
         },
         output: {
-            name:      variables.name,
+            name:      pkgConfig.name,
             file:      variables.outPath,
             sourcemap: true,
             format:    variables.target,
         },
-        globals: { },
+        globals: { ...pkgConfig.globals },
     };
 }
 

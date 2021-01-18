@@ -1,6 +1,7 @@
 import pathUtils from "path";
 import { camelCase, get, isEmpty } from "lodash";
 import pkgDir from "pkg-dir";
+import type { SimpleGlobals } from "../context";
 import { Target } from "../variables";
 
 export type MinimalPackageDotJson = {
@@ -11,6 +12,7 @@ export type MinimalPackageDotJson = {
         name?: string;
         input?: string;
         targets?: { [P in Target]?: string };
+        globals?: SimpleGlobals;
     };
 
     dependencies?: {
@@ -55,6 +57,7 @@ export type Outputs = { [P in Target]?: string };
 
 export type PackageConfiguration = {
     dependencies: { [packageId: string]: string };
+    globals: SimpleGlobals;
     typings: undefined|string;
     outputs: Outputs;
     name: string;
@@ -71,6 +74,7 @@ export async function readPackageConfig(): Promise<PackageConfiguration> {
 
     const packageConf: PackageConfiguration = {
         dependencies: { ...packageInfo.dependencies, ...packageInfo.devDependencies },
+        globals:      { },
         typings:      packageInfo.typings || packageInfo.types,
         outputs:      { },
         name:         camelCase(packageInfo.name),
@@ -99,6 +103,10 @@ export async function readPackageConfig(): Promise<PackageConfiguration> {
             }
 
             packageConf.outputs = outputs;
+        }
+
+        if (packageInfo.rolete.globals) {
+            packageConf.globals = { ...packageConf.globals, ...packageInfo.rolete.globals };
         }
     }
 
