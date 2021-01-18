@@ -1,6 +1,6 @@
 {
   "name": "@rolete/rolete",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Simple library bundler built on Rollup",
   "private": false,
   "bin": "bin/rolete",
@@ -15,6 +15,20 @@
     "prepublishOnly": "pinst --disable && npm run build",
     "postpublish": "pinst --enable"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/6XGate/rolete.git"
+  },
+  "keywords": [
+    "rollup",
+    "rolete"
+  ],
+  "author": "Matthew Holder (https://www.sleepingcats.org/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/6XGate/rolete/issues"
+  },
+  "homepage": "https://github.com/6XGate/rolete#readme",
   "engines": {
     "node": ">=12.9.0"
   },
@@ -23,9 +37,6 @@
     "lib/**/*.js",
     "types/**/*.d.ts"
   ],
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-node-resolve": "^11.1.0",
