@@ -2,8 +2,8 @@ import type { RollupNodeResolveOptions } from "@rollup/plugin-node-resolve";
 import { merge } from "lodash";
 import type { InputOptions } from "rollup";
 import type { Mutable } from "type-fest";
-import type { RoleteContext } from "../context";
-import { RoletePlugin } from "../plugins";
+import type { RoleteContext } from "../core/context";
+import { RoletePlugin } from "../core/plugins";
 import { CommonjsPlugin } from "./commonjs-plugin";
 
 export class NodeResolvePlugin extends RoletePlugin {
@@ -33,7 +33,7 @@ export class NodeResolvePlugin extends RoletePlugin {
     }
 }
 
-declare module "../context" {
+declare module "../core/context" {
     export interface RoleteContext {
         readonly resolve: (options: RollupNodeResolveOptions) => void;
     }

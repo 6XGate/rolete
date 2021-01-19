@@ -2,8 +2,8 @@ import type { RollupAutoInstallOptions } from "@rollup/plugin-auto-install";
 import { merge } from "lodash";
 import type { InputOptions } from "rollup";
 import type { Mutable } from "type-fest";
-import type { RoleteContext } from "../context";
-import { RoletePlugin } from "../plugins";
+import type { RoleteContext } from "../core/context";
+import { RoletePlugin } from "../core/plugins";
 import { NodeResolvePlugin } from "./node-resolve-plugin";
 
 export class AutoInstallPlugin extends RoletePlugin {
@@ -44,7 +44,7 @@ export class AutoInstallPlugin extends RoletePlugin {
     }
 }
 
-declare module "../context" {
+declare module "../core/context" {
     export interface RoleteContext {
         readonly autoInstall: (options: RollupAutoInstallOptions) => void;
     }

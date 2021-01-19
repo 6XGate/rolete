@@ -122,6 +122,8 @@ export default rolete((
         configuration, // "prod"|"dev"
         /* The format target */
         target, // "cjs"|"esm"|"amd"|"umd"|"iife"
+        /* The package.json data */
+        packageJson, // typeof package.json
         /* Environment */
         env, // typeof process.env
         /* -p passed properties */
