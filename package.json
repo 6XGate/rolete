@@ -1,6 +1,6 @@
 {
   "name": "@rolete/rolete",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Simple library bundler built on Rollup",
   "private": false,
   "bin": "bin/rolete",
