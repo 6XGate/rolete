@@ -2,9 +2,9 @@ import type { RollupBabelInputPluginOptions, RollupBabelOutputPluginOptions } fr
 import { isArray, isObject, isString, merge } from "lodash";
 import type { InputOptions, OutputOptions } from "rollup";
 import type { Mutable } from "type-fest";
-import type { RoleteContext, RoleteContextData } from "../context";
-import { RoletePlugin } from "../plugins";
-import type { BuildVariables } from "../variables";
+import type { RoleteContext, RoleteContextData } from "../core/context";
+import { RoletePlugin } from "../core/plugins";
+import type { BuildVariables } from "../core/variables";
 
 export class BabelPlugin extends RoletePlugin {
     private options!: RollupBabelInputPluginOptions|RollupBabelOutputPluginOptions;
@@ -44,8 +44,8 @@ export class BabelPlugin extends RoletePlugin {
         return false;
     }
 
-    prepare(roll: Mutable<RoleteContext>, variables: BuildVariables): void {
-        this.reset(variables);
+    prepare(roll: Mutable<RoleteContext>, data: RoleteContextData): void {
+        this.reset(data.variables);
         roll.babel = (options, onOutput) => {
             this.options = merge(this.options, options);
             this.onOutput = Boolean(onOutput);
@@ -60,13 +60,13 @@ export class BabelPlugin extends RoletePlugin {
     async input(): Promise<InputOptions> {
         const { getBabelInputPlugin } = await import("@rollup/plugin-babel");
 
-        return this.onOutput ? {} : { plugins: [getBabelInputPlugin(this.options)] };
+        return this.onOutput ? { } : { plugins: [getBabelInputPlugin(this.options)] };
     }
 
     async output(): Promise<OutputOptions> {
         const { getBabelOutputPlugin } = await import("@rollup/plugin-babel");
 
-        return this.onOutput ? { plugins: [getBabelOutputPlugin(this.options)] } : {};
+        return this.onOutput ? { plugins: [getBabelOutputPlugin(this.options)] } : { };
     }
 
     private reset(variables: BuildVariables): void {
@@ -82,7 +82,7 @@ export class BabelPlugin extends RoletePlugin {
     }
 }
 
-declare module "../context" {
+declare module "../core/context" {
     export interface RoleteContext {
         readonly babel: (options: RollupBabelInputPluginOptions|RollupBabelOutputPluginOptions, onOutput?: boolean) => void;
     }

@@ -1,28 +1,19 @@
 import pathUtils from "path";
+import { bold, italic } from "colorette";
 import { camelCase, get, isEmpty } from "lodash";
 import pkgDir from "pkg-dir";
-import type { SimpleGlobals } from "../context";
-import { Target } from "../variables";
+import type { PackageJson } from "type-fest";
+import { Target } from "../core/values";
 
-export type MinimalPackageDotJson = {
+export interface RoletePackageConfig {
     name?: string;
-    types?: string;
-    typings?: string;
-    rolete?: {
-        name?: string;
-        input?: string;
-        targets?: { [P in Target]?: string };
-        globals?: SimpleGlobals;
-    };
+    input?: string;
+    targets?: { [P in Target]?: string };
+}
 
-    dependencies?: {
-        [packageId: string]: string;
-    };
-
-    devDependencies?: {
-        [packageId: string]: string;
-    };
-};
+export interface PackageJsonRolete extends PackageJson {
+    rolete?: RoletePackageConfig;
+}
 
 export async function findPackageDotJson(): Promise<string> {
     const jsonPath = await pkgDir(process.cwd());
@@ -33,7 +24,7 @@ export async function findPackageDotJson(): Promise<string> {
     return pathUtils.join(jsonPath, "package.json");
 }
 
-function parseValue(packageInfo: MinimalPackageDotJson, path: string, value: string): string {
+function parseValue(packageInfo: PackageJsonRolete, path: string, value: string): string {
     if (isEmpty(value)) {
         throw new Error(`"${path}" is present but empty`);
     }
@@ -56,8 +47,8 @@ function parseValue(packageInfo: MinimalPackageDotJson, path: string, value: str
 export type Outputs = { [P in Target]?: string };
 
 export type PackageConfiguration = {
-    dependencies: { [packageId: string]: string };
-    globals: SimpleGlobals;
+    packageJson: PackageJsonRolete;
+    dependencies: { [PackageID in string]?: string };
     typings: undefined|string;
     outputs: Outputs;
     name: string;
@@ -66,15 +57,15 @@ export type PackageConfiguration = {
 
 export async function readPackageConfig(): Promise<PackageConfiguration> {
     const jsonPath = await findPackageDotJson();
-    const packageInfo = await import(jsonPath) as MinimalPackageDotJson;
+    const packageInfo = await import(jsonPath) as PackageJsonRolete;
 
     if (!packageInfo.name) {
-        throw new Error("Missing name: require('package.json').name'");
+        throw new Error(`Missing "${bold("name")}" in ${italic("package.json")}`);
     }
 
     const packageConf: PackageConfiguration = {
+        packageJson:  packageInfo,
         dependencies: { ...packageInfo.dependencies, ...packageInfo.devDependencies },
-        globals:      { },
         typings:      packageInfo.typings || packageInfo.types,
         outputs:      { },
         name:         camelCase(packageInfo.name),
@@ -99,14 +90,10 @@ export async function readPackageConfig(): Promise<PackageConfiguration> {
             }
 
             if (isEmpty(outputs)) {
-                throw new Error('"rolete.targets" is specified but empty');
+                throw new Error(`"${bold("rolete.targets")}" in ${italic("package.json")} is specified but empty`);
             }
 
             packageConf.outputs = outputs;
-        }
-
-        if (packageInfo.rolete.globals) {
-            packageConf.globals = { ...packageConf.globals, ...packageInfo.rolete.globals };
         }
     }
 

@@ -2,8 +2,8 @@ import type { RollupTypescriptOptions } from "@rollup/plugin-typescript";
 import { isArray, isObject, isString, merge } from "lodash";
 import type { InputOptions } from "rollup";
 import type { Mutable } from "type-fest";
-import type { RoleteContext, RoleteContextData } from "../context";
-import { RoletePlugin } from "../plugins";
+import type { RoleteContext, RoleteContextData } from "../core/context";
+import { RoletePlugin } from "../core/plugins";
 
 export class TypeScriptPlugin extends RoletePlugin {
     private options!: RollupTypescriptOptions;
@@ -66,7 +66,7 @@ export class TypeScriptPlugin extends RoletePlugin {
     }
 }
 
-declare module "../context" {
+declare module "../core/context" {
     export interface RoleteContext {
         readonly typescript: (options: RollupTypescriptOptions) => void;
     }
