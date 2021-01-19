@@ -2,16 +2,15 @@ import { merge } from "lodash";
 import type { OutputOptions } from "rollup";
 import type { Options } from "rollup-plugin-terser";
 import type { Mutable } from "type-fest";
-import type { RoleteContext, RoleteContextData } from "../context";
-import { RoletePlugin } from "../plugins";
-import type { BuildVariables } from "../variables";
+import type { RoleteContext, RoleteContextData } from "../core/context";
+import { RoletePlugin } from "../core/plugins";
 
 export class TerserPlugin extends RoletePlugin {
     private options!: Options;
     private forceEnabled!: boolean;
 
-    enabled(_data: RoleteContextData, variables: BuildVariables): boolean {
-        return variables.configuration === "prod" || this.forceEnabled;
+    enabled(data: RoleteContextData): boolean {
+        return data.variables.configuration === "prod" || this.forceEnabled;
     }
 
     prepare(roll: Mutable<RoleteContext>): void {
@@ -34,7 +33,7 @@ export class TerserPlugin extends RoletePlugin {
     }
 }
 
-declare module "../context" {
+declare module "../core/context" {
     export interface RoleteContext {
         readonly tenser: (options: Options) => void;
     }

@@ -5,9 +5,9 @@
   "private": false,
   "bin": "bin/rolete",
   "main": "lib/rolete.js",
-  "typings": "types/rolete.d.ts",
+  "typings": "lib/rolete.d.ts",
   "scripts": {
-    "lint": "eslint lib bin/rolete .eslintrc.js",
+    "lint": "eslint lib bin/rolete",
     "test": "echo \"TODO: testing coming soon\" && exit 1",
     "build": "tsc",
     "clean": "tsc --build --clean",
@@ -35,7 +35,7 @@
   "files": [
     "bin/*",
     "lib/**/*.js",
-    "types/**/*.d.ts"
+    "lib/**/*.d.ts"
   ],
   "dependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",

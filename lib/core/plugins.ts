@@ -1,18 +1,17 @@
 import type { InputOptions, OutputOptions } from "rollup";
-import type { RoleteContext, RoleteContextData, SimpleGlobals } from "./context";
-import { DependencySort } from "./sort";
-import type { BuildVariables } from "./variables";
+import { DependencySort } from "../utils/sort";
+import type { RoleteContext, RoleteContextData } from "./context";
 
 export class RoletePlugin {
     /** Determines whether the plug-in is enabled. */
     // eslint-disable-next-line class-methods-use-this
-    enabled(_data: RoleteContextData, _vars: BuildVariables): boolean {
+    enabled(_data: RoleteContextData): boolean {
         return false;
     }
 
     /** Prepares the plugin, resetting options, and adding extension methods to the roller context. */
     // eslint-disable-next-line class-methods-use-this
-    prepare(_roll: RoleteContext, _vars: BuildVariables): void {
+    prepare(_roll: RoleteContext, _data: RoleteContextData): void {
         // Does nothing by default.
     }
 
@@ -36,21 +35,14 @@ export class RoletePlugin {
 
     /** Defines additional input options to merge. */
     // eslint-disable-next-line class-methods-use-this
-    input(): Promise<InputOptions> {
+    input(_data: RoleteContextData): Promise<InputOptions> {
         // Defines additional input options.
         return Promise.resolve({ });
     }
 
     /** Defines additional output options to merge. */
     // eslint-disable-next-line class-methods-use-this
-    output(): Promise<OutputOptions> {
-        // Defines additional output options.
-        return Promise.resolve({ });
-    }
-
-    /** Defines additional globals to merge. */
-    // eslint-disable-next-line class-methods-use-this
-    globals(): Promise<SimpleGlobals> {
+    output(_data: RoleteContextData): Promise<OutputOptions> {
         // Defines additional output options.
         return Promise.resolve({ });
     }

@@ -1,14 +1,14 @@
 import type { RollupAliasOptions } from "@rollup/plugin-alias";
-import { merge } from "lodash";
+import { merge, omit } from "lodash";
 import type { InputOptions } from "rollup";
 import type { Mutable } from "type-fest";
-import type { RoleteContext } from "../context";
-import { RoletePlugin } from "../plugins";
+import type { RoleteContext } from "../core/context";
+import { RoletePlugin } from "../core/plugins";
 
 type AliasEntries = Required<RollupAliasOptions>["entries"];
 
 export class AliasPlugin extends RoletePlugin {
-    private options!: RollupAliasOptions;
+    private options!: Omit<RollupAliasOptions, "entries">;
     private entries!: null|AliasEntries;
     private isEnabled!: boolean;
 
@@ -19,7 +19,7 @@ export class AliasPlugin extends RoletePlugin {
     prepare(roll: Mutable<RoleteContext>): void {
         this.reset();
         roll.alias = (entries, options) => {
-            this.options = merge(this.options, options);
+            this.options = merge(this.options, omit(options, "entries"));
             this.entries = entries;
             this.isEnabled = true;
         };
@@ -44,8 +44,8 @@ export class AliasPlugin extends RoletePlugin {
     }
 }
 
-declare module "../context" {
+declare module "../core/context" {
     export interface RoleteContext {
-        readonly alias: (entries: AliasEntries, options?: RollupAliasOptions) => void;
+        readonly alias: (entries: AliasEntries, options?: Omit<RollupAliasOptions, "entries">) => void;
     }
 }

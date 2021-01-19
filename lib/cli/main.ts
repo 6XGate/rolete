@@ -6,10 +6,10 @@ import prettyMilliseconds from "pretty-ms";
 import type { InputOption, RollupBuild } from "rollup";
 import { rollup } from "rollup";
 import packageInfo from "../../package.json";
-import type { RoleteContextData } from "../context";
+import type { RoleteContextData } from "../core/context";
+import type { Target } from "../core/values";
 import * as logger from "../utils/logger";
 import { findPackageDotJson } from "../utils/package";
-import type { Target } from "../variables";
 import { getArguments } from "./arguments";
 
 interface SystemError extends Error {
@@ -76,10 +76,13 @@ async function build(rootPath: string, bundle: RollupBuild, data: RoleteContextD
 }
 
 async function main(): Promise<void> {
-    logger.line(`${packageInfo.name} ${packageInfo.version}: ${packageInfo.description}`);
-
     // Get the arguments now in case help is requested.
-    getArguments();
+    const args = getArguments();
+
+    // Echo the logo line.
+    if (!args.logo) {
+        logger.write("log", `${packageInfo.name} ${packageInfo.version}: ${packageInfo.description}`);
+    }
 
     const startedAt = Date.now();
     const rootPath = sysPath.dirname(await findPackageDotJson());

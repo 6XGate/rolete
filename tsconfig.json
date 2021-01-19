@@ -7,6 +7,7 @@
     "allowJs": false,
     "checkJs": false,
     "strict": true,
+    "skipLibCheck": true,
 
     "moduleResolution": "Node",
     "allowSyntheticDefaultImports": true,
@@ -23,9 +24,8 @@
     "noEmitOnError": true,
     "noErrorTruncation": true,
 
-    "skipLibCheck": true,
     "declaration": true,
-    "declarationDir": "types"
+    "removeComments": true
   },
   "include": [
     "lib/**/*.ts"

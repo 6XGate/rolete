@@ -1,36 +1,15 @@
 import pathUtils from "path";
 import { options as colorOptions, blue, gray, green, red, yellow } from "colorette";
-import { isError, isString, toString } from "lodash";
+import { isError, isString } from "lodash";
 import type { RollupError } from "rollup";
 import stripAnsi from "strip-ansi";
 import packageInfo from "../../package.json";
-import { getArguments } from "../cli/arguments";
+
+type LogLevel = "debug"|"error"|"info"|"log"|"trace"|"warn";
+type Style = (message: string) => string;
 
 const name = pathUtils.basename(packageInfo.name);
-const args = getArguments();
-if ("ansi" in args) {
-    colorOptions.enabled = args.ansi || false;
-}
-
-type Style = (message: string) => string;
 const normal = (text: string): string => text;
-
-type ConsoleParams = [string, ...unknown[]];
-const format = colorOptions.enabled ?
-    (style: Style, message: unknown, data: unknown[]): ConsoleParams =>
-        [ `[${style(name)}] ${style(toString(message))}`, ...data ] :
-    (_style: Style, message: unknown, data: unknown[]): ConsoleParams =>
-        [ `[${name}] ${stripAnsi(toString(message))}`, ...data.map(entry => (isString(entry) ? stripAnsi(entry) : entry)) ];
-
-const raw = colorOptions.enabled ?
-    (message: unknown, data: unknown[]): ConsoleParams =>
-        [ toString(message), ...data ] :
-    (message: unknown, data: unknown[]): ConsoleParams =>
-        [ stripAnsi(toString(message)), ...data.map(entry => (isString(entry) ? stripAnsi(entry) : entry)) ];
-
-export function isInColor(): boolean {
-    return colorOptions.enabled;
-}
 
 export function enableColor(enable: boolean): void {
     colorOptions.enabled = enable;
@@ -42,33 +21,30 @@ export function failed(): boolean {
     return failureOccurred;
 }
 
-export function debug(message: unknown, ...data: unknown[]): void {
-    console.debug(...format(normal, message, data));
+export function format(level: LogLevel, style: Style, message: unknown, ...data: unknown[]): void {
+    colorOptions.enabled ?
+        console[level](`[${style(name)}] ${style(String(message))}`, ...data) :
+        console[level](
+            `[${name}] ${stripAnsi(String(message))}`,
+            ...data.map(entry => (isString(entry) ? stripAnsi(entry) : entry)),
+        );
 }
 
-export function error(message: unknown, ...data: unknown[]): void {
-    console.error(...format(red, message, data));
+export function write(level: LogLevel, message: unknown, ...data: unknown[]): void {
+    colorOptions.enabled ?
+        console[level](String(message), ...data) :
+        console[level](
+            stripAnsi(String(message)),
+            ...data.map(entry => (isString(entry) ? stripAnsi(entry) : entry)),
+        );
 }
 
-export function info(message: unknown, ...data: unknown[]): void {
-    console.info(...format(green, message, data));
-}
-
-export function log(message: unknown, ...data: unknown[]): void {
-    console.log(...format(blue, message, data));
-}
-
-export function trace(message: unknown, ...data: unknown[]): void {
-    console.trace(...format(gray, message, data));
-}
-
-export function warn(message: unknown, ...data: unknown[]): void {
-    console.warn(...format(yellow, message, data));
-}
-
-export function line(message: unknown, ...data: unknown[]): void {
-    console.log(...raw(message, data));
-}
+export const debug = format.bind(null, "debug", normal);
+export const error = format.bind(null, "error", red);
+export const info = format.bind(null, "info", green);
+export const log = format.bind(null, "log", blue);
+export const trace = format.bind(null, "trace", gray);
+export const warn = format.bind(null, "warn", yellow);
 
 function tryPrintRollupError(rollupError: RollupError): void {
     error(rollupError);
@@ -88,11 +64,11 @@ function tryPrintRollupError(rollupError: RollupError): void {
     }
 
     if (fileLine) {
-        line(fileLine);
+        write("log", fileLine);
     }
 
     if (rollupError.frame) {
-        line(rollupError.frame);
+        write("log", rollupError.frame);
     }
 }
 
@@ -107,4 +83,9 @@ export function exception(maybeException: unknown): void {
 export function failure(maybeException: unknown): void {
     exception(maybeException);
     failureOccurred = true;
+}
+
+export function fatal(maybeException: unknown): never {
+    exception(maybeException);
+    process.exit(1);
 }
