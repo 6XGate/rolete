@@ -39,7 +39,7 @@
   ],
   "dependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
-    "@rollup/plugin-node-resolve": "^11.1.0",
+    "@rollup/plugin-node-resolve": "^13.0.0",
     "colorette": "^1.2.1",
     "esm": "^3.2.25",
     "lodash": "^4.17.20",
