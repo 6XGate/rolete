@@ -38,8 +38,8 @@
     "lib/**/*.d.ts"
   ],
   "dependencies": {
-    "@rollup/plugin-commonjs": "^17.0.0",
-    "@rollup/plugin-node-resolve": "^11.1.0",
+    "@rollup/plugin-commonjs": "^19.0.0",
+    "@rollup/plugin-node-resolve": "^13.0.0",
     "colorette": "^1.2.1",
     "esm": "^3.2.25",
     "lodash": "^4.17.20",
@@ -48,7 +48,7 @@
     "pretty-ms": "^7.0.1",
     "rollup": "^2.36.1",
     "rollup-plugin-terser": "^7.0.2",
-    "strip-ansi": "^6.0.0",
+    "strip-ansi": "^7.0.0",
     "yargs": "^16.2.0"
   },
   "devDependencies": {
@@ -63,14 +63,12 @@
     "@typescript-eslint/eslint-plugin": "^4.13.0",
     "@typescript-eslint/parser": "^4.13.0",
     "eslint": "^7.18.0",
-    "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1",
     "husky": "^6.0.0",
     "pinst": "^2.1.1",
     "tslib": "^2.1.0",
-    "type-fest": "^0.20.2",
+    "type-fest": "^1.1.3",
     "typescript": "^4.1.3"
   }
 }
