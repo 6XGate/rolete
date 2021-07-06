@@ -65,7 +65,7 @@
     "eslint": "^7.18.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
-    "husky": "^6.0.0",
+    "husky": "^7.0.1",
     "pinst": "^2.1.1",
     "tslib": "^2.1.0",
     "type-fest": "^1.1.3",
