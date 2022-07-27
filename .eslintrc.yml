@@ -17,7 +17,7 @@ extends:
   - 'plugin:node/recommended'
 
 parserOptions:
-  ecmaVersion: 2018
+  ecmaVersion: 2020
   sourceType: module
 
 reportUnusedDisableDirectives: true
@@ -223,7 +223,7 @@ overrides:
   - files: [ '*.mjs' ]
     rules: &esm-rules
       # Allow modules for the build configuration.
-      node/no-unsupported-features/es-syntax: [ error, { version: '>=12.18.0', ignores: [ modules, dynamicImport ] } ]
+      node/no-unsupported-features/es-syntax: [ error, { version: '>=14', ignores: [ modules, dynamicImport ] } ]
       import/no-commonjs:  error
 
   # Build configuration ES modules.
