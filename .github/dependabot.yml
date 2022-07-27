@@ -9,3 +9,6 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    ignore:
+      # Don't try to update types, those only need updating with their related package.
+      - dependency-name: "@types/*"
