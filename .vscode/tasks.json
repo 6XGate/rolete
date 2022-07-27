@@ -1,0 +1,38 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+    {
+      "type": "npm",
+      "script": "build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "label": "Build",
+      "detail": "Build the package"
+    },
+    {
+      "type": "npm",
+      "script": "clean",
+      "problemMatcher": [],
+      "group": "build",
+      "label": "Clean",
+      "detail": "Cleans build artifacts"
+    },
+    {
+      "type": "npm",
+      "script": "lint",
+      "problemMatcher": [],
+      "label": "Lint",
+      "detail": "Checks the code style"
+    },
+    {
+      "type": "npm",
+      "script": "fix",
+      "problemMatcher": [],
+      "label": "Fix style",
+      "detail": "Fixes any code style violations"
+    }
+  ]
+}
