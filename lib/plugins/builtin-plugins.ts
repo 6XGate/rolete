@@ -9,7 +9,7 @@ import { OutputPlugin } from "./output-plugin";
 import { TerserPlugin } from "./terser-plugin";
 import { TypeScriptPlugin } from "./type-script-plugin";
 
-// TODO: The order is important. See the documentation for the plug-in.
+// XXX: The order is important. See the documentation for the plug-in.
 export const defaultPlugins = [
     AliasPlugin,
     AutoInstallPlugin,
