@@ -38,7 +38,7 @@ export const getArguments = once(() =>
     yargs.
         usage("Usage: $0 [options]").
         /***/strict().
-        /***/completion().
+        // /***/completion().
         boolean("ansi").
         /***/describe("ansi", "Enables colors").
         /***/describe("no-ansi", "Disables colors").
@@ -60,7 +60,7 @@ export const getArguments = once(() =>
         /***/alias("h", "help").
         showHidden().
         wrap(Math.min(110, yargs.terminalWidth())).
-        onFinishCommand(() => { process.exit(0) }).
+        // onFinishCommand(() => { process.exit(0) }).
         check(argv => {
             // Ensure off-limits properties aren't specified.
             if (argv.p) {
@@ -76,7 +76,7 @@ export const getArguments = once(() =>
 
             return true;
         }).
-        parse(process.argv.splice(2), { }, (error, argv, output) => {
+        parseSync(process.argv.splice(2), { }, (error, argv, output) => {
             // Trap the color flag.
             if ("ansi" in argv) {
                 logger.enableColor(argv.ansi || false);
