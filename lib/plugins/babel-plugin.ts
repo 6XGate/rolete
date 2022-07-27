@@ -7,7 +7,7 @@ import { RoletePlugin } from "../core/plugins";
 import type { BuildVariables } from "../core/variables";
 
 export class BabelPlugin extends RoletePlugin {
-    private options!: RollupBabelInputPluginOptions|RollupBabelOutputPluginOptions;
+    private options!: RollupBabelInputPluginOptions | RollupBabelOutputPluginOptions;
     private onOutput!: boolean;
 
     enabled(data: RoleteContextData): boolean {
@@ -84,6 +84,6 @@ export class BabelPlugin extends RoletePlugin {
 
 declare module "../core/context" {
     export interface RoleteContext {
-        readonly babel: (options: RollupBabelInputPluginOptions|RollupBabelOutputPluginOptions, onOutput?: boolean) => void;
+        readonly babel: (options: RollupBabelInputPluginOptions | RollupBabelOutputPluginOptions, onOutput?: boolean) => void;
     }
 }

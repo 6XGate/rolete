@@ -58,7 +58,7 @@ export function registerPlugin(Plugin: typeof RoletePlugin): void {
 
 }
 
-function ensureMapped(plugin: typeof RoletePlugin, value: RoletePlugin|undefined): RoletePlugin {
+function ensureMapped(plugin: typeof RoletePlugin, value: RoletePlugin | undefined): RoletePlugin {
     if (!value) {
         throw new ReferenceError(`Plugin not registered ${plugin.name}`);
     }

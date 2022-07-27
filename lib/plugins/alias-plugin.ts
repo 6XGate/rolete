@@ -9,7 +9,7 @@ type AliasEntries = Required<RollupAliasOptions>["entries"];
 
 export class AliasPlugin extends RoletePlugin {
     private options!: Omit<RollupAliasOptions, "entries">;
-    private entries!: null|AliasEntries;
+    private entries!: null | AliasEntries;
     private isEnabled!: boolean;
 
     enabled(): boolean {

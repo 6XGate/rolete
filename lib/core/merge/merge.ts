@@ -4,7 +4,7 @@ import type { InputOption } from "rollup";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type MergeStrategy = (target: any, source: any) => any;
-export type MergeStrategies = { [property: string]: MergeStrategy|MergeStrategies };
+export type MergeStrategies = { [property: string]: MergeStrategy | MergeStrategies };
 
 function chunkNameOf(fileName: string): string {
     const parts = path.parse(fileName);
@@ -84,7 +84,7 @@ export function mergeInput(target: InputOption, source: InputOption): InputOptio
     throw new TypeError("`input` must be a string, array, or object");
 }
 
-export function mergeMaybeArray<T>(target: undefined|null|T|T[], source: undefined|null|T|T[]): undefined|null|T|T[] {
+export function mergeMaybeArray<T>(target: undefined | null | T | T[], source: undefined | null | T | T[]): undefined | null | T | T[] {
     if (isNil(target)) {
         return source;
     }
@@ -106,11 +106,11 @@ export function mergeMaybeArray<T>(target: undefined|null|T|T[], source: undefin
         [ target, source ];
 }
 
-export function ignore<T>(target: undefined|null|T, _source: undefined|null|T): undefined|null|T {
+export function ignore<T>(target: undefined | null | T, _source: undefined | null | T): undefined | null | T {
     return target;
 }
 
-export function replace<T>(_target: undefined|null|T, source: undefined|null|T): undefined|null|T {
+export function replace<T>(_target: undefined | null | T, source: undefined | null | T): undefined | null | T {
     return source;
 }
 
@@ -128,8 +128,8 @@ export function merge<T>(strategies: MergeStrategies, target: T, source: T): T {
                 }
             }
         } else {
-            const base = target[name as keyof T] as unknown as null|undefined|T[keyof T];
-            const input = source[name as keyof T] as unknown as null|undefined|T[keyof T];
+            const base = target[name as keyof T] as unknown as null | undefined | T[keyof T];
+            const input = source[name as keyof T] as unknown as null | undefined | T[keyof T];
 
             target[name as keyof T] = merge<T[keyof T]>(strategy, base || {} as T[keyof T], input || {} as T[keyof T]);
         }

@@ -5,7 +5,7 @@ import type { RollupError } from "rollup";
 import stripAnsi from "strip-ansi";
 import packageInfo from "../../package.json";
 
-type LogLevel = "debug"|"error"|"info"|"log"|"trace"|"warn";
+type LogLevel = "debug" | "error" | "info" | "log" | "trace" | "warn";
 type Style = (message: string) => string;
 
 const name = pathUtils.basename(packageInfo.name);

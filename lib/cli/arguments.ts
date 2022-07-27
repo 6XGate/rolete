@@ -5,10 +5,10 @@ import { Target } from "../core/values";
 import * as logger from "../utils/logger";
 import { oneliner } from "../utils/tags";
 
-export type Properties = { [P in string]?: string|boolean };
+export type Properties = { [P in string]?: string | boolean };
 
 function parseProperties(values: string[]): Properties {
-    const result = {} as { [P in string]?: string|boolean };
+    const result = {} as { [P in string]?: string | boolean };
     for (const value of values) {
         const separator = value.indexOf(":");
         if (separator !== -1) {

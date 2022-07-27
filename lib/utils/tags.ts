@@ -23,7 +23,7 @@ function minIndent(lines: string[]): number {
     return min;
 }
 
-function buildResolvedLines(literals: string|string[]|TemplateStringsArray, values: unknown[]): string[] {
+function buildResolvedLines(literals: string | string[] | TemplateStringsArray, values: unknown[]): string[] {
     const parts = castArray(literals);
     const raw = `${String(parts[0])}${values.map((value, i) => `${String(value)}${String(parts[i + 1])}`).join("")}`;
 
@@ -31,8 +31,8 @@ function buildResolvedLines(literals: string|string[]|TemplateStringsArray, valu
 }
 
 export function dedent(literals: string): string;
-export function dedent(literals: string|string[]|TemplateStringsArray, ...values: unknown[]): string;
-export function dedent(literals: string|string[]|TemplateStringsArray, ...values: unknown[]): string {
+export function dedent(literals: string | string[] | TemplateStringsArray, ...values: unknown[]): string;
+export function dedent(literals: string | string[] | TemplateStringsArray, ...values: unknown[]): string {
     const lines = buildResolvedLines(literals, values);
     const init = minIndent(lines);
 
@@ -40,7 +40,7 @@ export function dedent(literals: string|string[]|TemplateStringsArray, ...values
 }
 
 export function oneliner(literals: string): string;
-export function oneliner(literals: string|string[]|TemplateStringsArray, ...values: unknown[]): string;
-export function oneliner(literals: string|string[]|TemplateStringsArray, ...values: unknown[]): string {
+export function oneliner(literals: string | string[] | TemplateStringsArray, ...values: unknown[]): string;
+export function oneliner(literals: string | string[] | TemplateStringsArray, ...values: unknown[]): string {
     return buildResolvedLines(literals, values).map(line => line.trim()).join(" ");
 }

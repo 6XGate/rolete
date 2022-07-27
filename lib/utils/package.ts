@@ -31,7 +31,7 @@ function parseValue(packageInfo: PackageJsonRolete, path: string, value: string)
 
     if (value.startsWith("#")) {
         value = value.slice(1);
-        const found = get(packageInfo, value, null) as null|string;
+        const found = get(packageInfo, value, null) as null | string;
         if (found === null) {
             throw new ReferenceError(`"${path}" references package.json[${value}] which doesn't exists`);
         } else if (isEmpty(value)) {
@@ -49,7 +49,7 @@ export type Outputs = { [P in Target]?: string };
 export type PackageConfiguration = {
     packageJson: PackageJsonRolete;
     dependencies: { [PackageID in string]?: string };
-    typings: undefined|string;
+    typings: undefined | string;
     outputs: Outputs;
     name: string;
     input?: string;
