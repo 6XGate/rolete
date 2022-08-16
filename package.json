@@ -44,7 +44,7 @@
     "colorette": "^1.4.0",
     "esm": "^3.2.25",
     "lodash": "^4.17.21",
-    "pkg-dir": "^5.0.0",
+    "pkg-dir": "^7.0.0",
     "pretty-bytes": "^5.6.0",
     "pretty-ms": "^7.0.1",
     "rollup": "^2.77.2",
