@@ -1,5 +1,7 @@
 # Rolete
 
+## _rolete_ is being deprecated in favor of [webpack](https://webpack.js.org/)
+
 Simple (read quick and dirty) library bundler built on Rollup.
 
 _Rolete_ is inspired by [MSBuild](https://docs.microsoft.com/visualstudio/msbuild) and
